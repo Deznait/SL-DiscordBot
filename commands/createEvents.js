@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
 const axios = require('axios');
-const { guildId, channelId, raidHelperToken } = require('../.config.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -11,11 +10,11 @@ module.exports = {
 		// interaction.member is the GuildMember object, which represents the user in the specific guild
 		const options = {
 			baseURL: 'https://raid-helper.dev/api/v1/',
-			url: guildId + '/' + channelId + '/create/event',
+			url: interaction.guildId + '/' + process.env.DISCORD_CHANNELID + '/create/event',
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': raidHelperToken,
+				'Authorization': process.env.RAIDHELPER_TOKEN,
 			},
 			data: {
 				leaderId: interaction.user.id,
@@ -35,7 +34,7 @@ module.exports = {
 			},
 		};
 		console.log(options);
-		console.log(interaction.user);
+		console.log('interaction', interaction);
 
 		axios(options)
 			.then(function(response) {
