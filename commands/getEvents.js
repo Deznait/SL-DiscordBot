@@ -6,8 +6,6 @@ module.exports = {
 		.setName('getevents')
 		.setDescription('Gets all the events.'),
 	async execute(interaction) {
-		// interaction.user is the object representing the User who ran the command
-		// interaction.member is the GuildMember object, which represents the user in the specific guild
 		const options = {
 			baseURL: 'https://raid-helper.dev/api/v1/',
 			url: interaction.guildId + '/events',
@@ -26,6 +24,9 @@ module.exports = {
 				console.log(response.data);
 			});
 
-		await interaction.reply(`This command was run by ${interaction.user.username}, who joined on ${interaction.member.joinedAt}.`);
+		const reply = (process.env.DEVMODE)
+			? `DEVMODE - This command was run by ${interaction.user.username}, who joined on ${interaction.member.joinedAt}.`
+			: `This command was run by ${interaction.user.username}, who joined on ${interaction.member.joinedAt}.`;
+		await interaction.reply({ content: reply, ephemeral: true });
 	},
 };
