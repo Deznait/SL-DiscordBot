@@ -1,6 +1,7 @@
 const { REST, Routes } = require('discord.js');
-const { clientId, guildId, token } = require('./.config.json');
+require('dotenv').config();
 const fs = require('node:fs');
+const guildCommands = true;
 const deleteCommands = false;
 
 const commands = [];
@@ -14,7 +15,7 @@ for (const file of commandFiles) {
 }
 
 // Construct and prepare an instance of the REST module
-const rest = new REST({ version: '10' }).setToken(token);
+const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
 // and deploy your commands!
 if(!deleteCommands) {
@@ -22,11 +23,22 @@ if(!deleteCommands) {
 		try {
 			console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
-			// The put method is used to fully refresh all commands in the guild with the current set
-			const data = await rest.put(
-				Routes.applicationCommands(clientId),
-				{ body: commands },
-			);
+			let data = '';
+			if (guildCommands) {
+				// The put method is used to fully refresh all commands in the guild with the current set
+				data = await rest.put(
+					Routes.applicationGuildCommands(process.env.DISCORD_CLIENTID, process.env.DISCORD_GUILDID),
+
+					{ body: commands },
+				);
+			}
+			else{
+				// The put method is used to fully refresh all commands in the guild with the current set
+				data = await rest.put(
+					Routes.applicationCommands(process.env.DISCORD_CLIENTID),
+					{ body: commands },
+				);
+			}
 
 			console.log(`Successfully reloaded ${data.length} application (/) commands.`);
 		}
@@ -38,12 +50,12 @@ if(!deleteCommands) {
 }
 else{
 	// for guild-based commands
-	rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: [] })
+	rest.put(Routes.applicationGuildCommands(process.env.DISCORD_CLIENTID, process.env.DISCORD_GUILDID), { body: [] })
 		.then(() => console.log('Successfully deleted all guild commands.'))
 		.catch(console.error);
 
 	// for global commands
-	rest.put(Routes.applicationCommands(clientId), { body: [] })
+	rest.put(Routes.applicationCommands(process.env.DISCORD_CLIENTID), { body: [] })
 		.then(() => console.log('Successfully deleted all application commands.'))
 		.catch(console.error);
 }
