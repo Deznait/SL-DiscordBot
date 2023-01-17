@@ -4,13 +4,22 @@ const axios = require('axios');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('createevents')
-		.setDescription('Create events on a range of dates.'),
+		.setDescription('Crear eventos dentro de un rango de fechas.')
+		.addStringOption(option =>
+			option.setName('date-start')
+				.setDescription('Introducir fecha de inicio (Formato dd-MM-yyyy)')
+				.setRequired(true))
+		.addStringOption(option =>
+			option.setName('date-end')
+				.setDescription('Introducir fecha de fin (Formato dd-MM-yyyy)')
+				.setRequired(true)),
 	async execute(interaction) {
-		// interaction.user is the object representing the User who ran the command
-		// interaction.member is the GuildMember object, which represents the user in the specific guild
+		const dateStart = interaction.options.getString('date-start');
+		const dateEnd = interaction.options.getString('date-end');
+
 		const options = {
 			baseURL: 'https://raid-helper.dev/api/v1/',
-			url: interaction.guildId + '/' + process.env.DISCORD_CHANNELID + '/create/event',
+			url: interaction.guildId + '/' + interaction.channelId + '/create/event',
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -33,12 +42,17 @@ module.exports = {
 				},
 			},
 		};
+		console.log('dateStart', dateStart);
+		console.log('dateEnd', dateEnd);
 		console.log(options);
-		console.log('interaction', interaction);
 
 		axios(options)
 			.then(function(response) {
-				console.log('Response Data', response.data);
+				console.log('Response OK', response.data);
+			})
+			.catch(function(error) {
+				// handle error
+				console.log('Response Error', error);
 			});
 
 		await interaction.reply(`This command was run by ${interaction.user.username}, who joined on ${interaction.member.joinedAt}.`);
