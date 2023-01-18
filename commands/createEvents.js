@@ -58,7 +58,7 @@ module.exports = {
 					dateArray.push(new Date(currentDate).getTime());
 				}
 				// Use UTC date to prevent problems with time zones and DST
-				currentDate.setUTCDate(currentDate.getUTCDate() + steps);
+				currentDate.setDate(currentDate.getDate() + steps);
 			}
 
 			return dateArray;
