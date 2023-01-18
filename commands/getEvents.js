@@ -19,9 +19,11 @@ module.exports = {
 
 		axios(options)
 			.then(function(response) {
-				console.log('interaction', interaction);
-				console.log('interaction.guildId', interaction.guildId);
 				console.log(response.data);
+			})
+			.catch(function(error) {
+				// handle error
+				console.log('Response Error', error);
 			});
 
 		console.log('DEVMODE', process.env.DEVMODE);
