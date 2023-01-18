@@ -43,13 +43,17 @@ module.exports = {
 			},
 		};
 		// /createevents date-start:2023-01-19 date-end:2023-01-19
+		// 1674165600000
+		// 1674162000000
 
 		function dateRange(startDate, endDate, steps = 1) {
 			const dateArray = [];
 			const currentDate = new Date(startDate);
+			currentDate.toLocaleString('es-ES', { timeZone: 'Europe/Madrid' });
 			currentDate.setHours(22);
 			currentDate.setMinutes(0);
 			const endDateFixed = new Date(endDate);
+			endDateFixed.toLocaleString('es-ES', { timeZone: 'Europe/Madrid' });
 			endDateFixed.setHours(23);
 			endDateFixed.setMinutes(59);
 
