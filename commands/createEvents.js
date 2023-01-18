@@ -42,7 +42,7 @@ module.exports = {
 				},
 			},
 		};
-		// /createevents date-start:2023-01-18 date-end:2023-01-24
+		// /createevents date-start:2023-01-19 date-end:2023-01-19
 
 		function dateRange(startDate, endDate, steps = 1) {
 			const dateArray = [];
@@ -68,6 +68,7 @@ module.exports = {
 		if (process.env.DEVMODE !== 'true') {
 			for (const date of dateRange(dateStart, dateEnd)) {
 				options.data.date = date;
+				console.log(options);
 
 				await axios(options)
 					.then(function(response) {
