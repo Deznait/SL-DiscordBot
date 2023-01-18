@@ -24,7 +24,8 @@ module.exports = {
 				console.log(response.data);
 			});
 
-		const reply = (process.env.DEVMODE)
+		console.log('DEVMODE', process.env.DEVMODE);
+		const reply = (process.env.DEVMODE === 'true')
 			? `DEVMODE - This command was run by ${interaction.user.username}, who joined on ${interaction.member.joinedAt}.`
 			: `This command was run by ${interaction.user.username}, who joined on ${interaction.member.joinedAt}.`;
 		await interaction.reply({ content: reply, ephemeral: true });

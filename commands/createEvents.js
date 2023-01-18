@@ -65,7 +65,7 @@ module.exports = {
 		}
 
 		await interaction.deferReply({ ephemeral: true });
-		if (!process.env.DEVMODE) {
+		if (process.env.DEVMODE !== 'true') {
 			for (const date of dateRange(dateStart, dateEnd)) {
 				options.data.date = date;
 
@@ -82,7 +82,7 @@ module.exports = {
 			}
 		}
 
-		const reply = (process.env.DEVMODE)
+		const reply = (process.env.DEVMODE === 'true')
 			? 'DEVMODE - Eventos creados correctamente.'
 			: 'Eventos creados correctamente.';
 		await interaction.editReply({ content: reply, ephemeral: true });
