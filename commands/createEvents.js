@@ -80,6 +80,8 @@ module.exports = {
 						// handle error
 						console.log('Response Error', error);
 					});
+
+				console.log('');
 			}
 		}
 
