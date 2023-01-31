@@ -31,6 +31,7 @@ module.exports = {
 				leaderId: interaction.user.id,
 				templateId: 6,
 				date: '',
+				time: '10:00 pm',
 				title: 'VoI',
 				description: 'Cámara de las Encarnaciones',
 				advancedSettings: {
@@ -54,7 +55,7 @@ module.exports = {
 
 			while (startDate <= endDate) {
 				if (startDate.weekday !== 5 && startDate.weekday !== 6) {
-					dateArray.push(startDate.toUnixInteger());
+					dateArray.push(startDate);
 					console.log('Date added:', startDate.toISO() + ' - ' + startDate.toUnixInteger());
 				}
 				// Use UTC date to prevent problems with time zones and DST
@@ -67,7 +68,7 @@ module.exports = {
 		await interaction.deferReply({ ephemeral: true });
 		if (process.env.DEVMODE !== 'true') {
 			for (const date of dateRange(dateStart, dateEnd)) {
-				options.data.date = date;
+				options.data.date = date.toFormat('dd-MM-yyyy');
 				console.log(options);
 
 				await axios(options)
