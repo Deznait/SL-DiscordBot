@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { DateTime } = require('luxon');
 const axios = require('axios');
 
 module.exports = {
@@ -42,27 +43,21 @@ module.exports = {
 				},
 			},
 		};
-		// /createevents date-start:2023-01-19 date-end:2023-01-19
-		// 1674165600000
-		// 1674162000000
+		// /createevents date-start:2023-02-01 date-end:2023-02-07
 
-		function dateRange(startDate, endDate, steps = 1) {
+		function dateRange(sDate, eDate, steps = 1) {
 			const dateArray = [];
-			const currentDate = new Date(startDate);
-			currentDate.toLocaleString('es-ES', { timeZone: 'Europe/Madrid' });
-			currentDate.setHours(22);
-			currentDate.setMinutes(0);
-			const endDateFixed = new Date(endDate);
-			endDateFixed.toLocaleString('es-ES', { timeZone: 'Europe/Madrid' });
-			endDateFixed.setHours(23);
-			endDateFixed.setMinutes(59);
+			let startDate = DateTime.fromISO(sDate + 'T22:00:00').setZone('Europe/Madrid');
+			// console.log('startDate', startDate);
+			const endDate = DateTime.fromISO(eDate + 'T23:59:59').setZone('Europe/Madrid');
+			// console.log('endDate', endDate);
 
-			while (currentDate <= endDateFixed) {
-				if (currentDate.getDay() !== 5 && currentDate.getDay() !== 6) {
-					dateArray.push(new Date(currentDate).getTime());
+			while (startDate <= endDate) {
+				if (startDate.weekday !== 5 && startDate.weekday !== 6) {
+					dateArray.push(startDate.toUnixInteger());
 				}
 				// Use UTC date to prevent problems with time zones and DST
-				currentDate.setDate(currentDate.getDate() + steps);
+				startDate = startDate.plus({ days: steps });
 			}
 
 			return dateArray;
