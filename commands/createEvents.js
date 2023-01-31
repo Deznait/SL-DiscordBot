@@ -55,7 +55,7 @@ module.exports = {
 			while (startDate <= endDate) {
 				if (startDate.weekday !== 5 && startDate.weekday !== 6) {
 					dateArray.push(startDate.toUnixInteger());
-					console.log('date added', startDate.toISO());
+					console.log('Date added:', startDate.toISO() + ' - ' + startDate.toUnixInteger());
 				}
 				// Use UTC date to prevent problems with time zones and DST
 				startDate = startDate.plus({ days: steps });
